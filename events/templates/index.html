@@ -1,0 +1,32 @@
+<! DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+        <title>{% block pagetitle %}{% endblock %}</title>
+    </head>
+    <body>
+        {% if user.id %}
+            <header>
+                <div class='clearfix'>
+                    <div style='float:left;'>
+                        <a href='/' style='display: inline-block; width: 30px;'>
+                            <?xml version="1.0" ?><svg enable-background="new 0 0 32 32" id="Glyph" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M30.854,16.548C30.523,17.43,29.703,18,28.764,18H28v11c0,0.552-0.448,1-1,1h-6v-7c0-2.757-2.243-5-5-5  s-5,2.243-5,5v7H5c-0.552,0-1-0.448-1-1V18H3.235c-0.939,0-1.759-0.569-2.09-1.451c-0.331-0.882-0.088-1.852,0.62-2.47L13.444,3.019  c1.434-1.357,3.679-1.357,5.112,0l11.707,11.086C30.941,14.696,31.185,15.666,30.854,16.548z" id="XMLID_219_"/></svg>
+                        </a>
+                        <span>Hi, {{user.first_name}} {{user.first_name}}</span>
+                    </div>
+                    <div style='float:right;'>
+                        {% if user.is_staff %}
+                            <a href="{% url 'viewevents' %}" id='vieweventsbtn'>View Created Events</a>
+                            <a href="{% url 'addnewevent' %}" id='addeventbtn'>Add New Event</a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" id='logoutbtn'>Logout</a>
+                    </div>
+                </div>
+            </header>
+        {% endif %}
+        {% block main-content %}{% endblock %}
+    </body>
+</html>

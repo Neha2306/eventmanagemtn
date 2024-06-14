@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+{% block pagetitle %}Edit Event - {{event.title}}{% endblock %}
+{% block main-content %}
+    <div class="container">
+        <h1 style='text-align: center; font-size: 20px;'>Edit Event</h1>
+        <div class="row">
+            <div class='formclassdiv'>
+                <form method='POST' class='formclass'>
+                    {% csrf_token %}
+                    <div>
+                        <label>Title<span>*</span></label>
+                        <input type='text' placeholder='Enter Title' name='title' id='title' value='{{event.title}}' />
+                    </div>
+                    <div>
+                        <label>Description<span>*</span></label>
+                        <textarea placeholder='Enter Title' name='description' id='description'>{{event.description}}</textarea>
+                    </div>
+                    <div>
+                        <label>Select Event Date<span>*</span></label>
+                        <input type='date' placeholder='Select Event Date' name='eventdate' id='eventdate' value='{{event.date  | date:"Y-m-d"}}' />
+                    </div>
+                    <div>
+                        <label>Select Event Time<span>*</span></label>
+                        <input type='time' placeholder='Select Event Time' name='eventtime' id='eventtime' value='{{event.time  | date:"H:i"}}' />
+                    </div>
+                    <div>
+                        <label>Location<span>*</span></label>
+                        <input type='text' placeholder='Enter Location' name='location' id='location' value='{{event.location}}' />
+                    </div>
+                    <div>
+                        <label>RSVP Users / Invite Users</label>
+                        <select name='selectrsvpusers' id='selectrsvpusers' multiple>
+                            {% for user in users %}
+                                <option value='{{user.id}}' {% if user.id|stringformat:"d" in rsvp_users %} selected {% endif %}>{{user.first_name}} {{user.last_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Is RSVP</label>
+                        <div>
+                            <label class="switch">
+                                <input type="checkbox" name='isrsvp' id='isrsvp' {% if event.isrsvp %}checked{% endif %}>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <button type='submit'>Edit Event</button>
+                    {% if error %}
+                        <div class='errordiv responsediv'>{{error}}</div>
+                    {% endif %}
+                    {% if success %}
+                        <div class='successdiv responsediv'>{{success}}</div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

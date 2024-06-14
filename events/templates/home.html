@@ -1,0 +1,133 @@
+{% extends "index.html" %}
+{% block pagetitle %}Dashboard{% endblock %}
+{% block main-content %}
+{% now "Y-m-d" as current_date %}
+    <div class='container'>
+        <div>
+            <div class='extra_container clearfix'>
+                <form method="GET">
+                    <div style='float:left'>
+                        <input type='text' name="serachevent" id='serachevent' placeholder='Search by Event Name' class='filterevent' value='{{search_event_name}}'>
+                        <input type='date' name="datefilter" id='datefilter' placeholder='Select Date' class='filterevent' value='{{search_date}}'>
+                        {% if locations|length > 0 %}
+                            <select name='filterlocation' id='filterlocation' class='filterevent'>
+                                <option value=''>-- Select Location --</option>
+                                {% for locationd in locations %}
+                                    <option value='{{locationd.location}}' {% if locationd.location == search_location %}selected{% endif %} >{{locationd.location}}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}  
+                        <select id='sortby' name='sortby' class='filterevent'>
+                            <option value=''>-- Sort By --</option>
+                            <option value='sorttime' {% if 'sorttime' == sortby %}selected{% endif %} >Event Time (Ascending Order)</option>
+                            <option value='sort-time' {% if 'sort-time' == sortby %}selected{% endif %} >Event Time (Descending Order)</option>
+                            <option value='sortdate' {% if 'sortdate' == sortby %}selected{% endif %} >Event Date (Ascending Order)</option>
+                            <option value='sort-date' {% if 'sort-date' == sortby %}selected{% endif %} >Event Date (Descending Order)</option>
+                            <option value='sorttitle' {% if 'sorttitle' == sortby %}selected{% endif %} >Event Name (Ascending Order)</option>
+                            <option value='sort-title' {% if 'sort-title' == sortby %}selected{% endif %} >Event Name (Descending Order)</option>
+                        </select>
+                    </div>
+                    <div style='float:right'>
+                        <button type='submit' id='submitfilter'>Submit</button>
+                    </div>
+                <form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1 style='text-align: left; color: #fff; background: #000; padding: 8px 22px; font-size: 15px; font-weight: 300;'>Upcoming / Today's Events</h1>
+        <div class="row">
+            {% if unacceptedrsvpevents|length > 0 %}
+                {% for unacceptedrsvpevent in unacceptedrsvpevents %}
+                    <div class="col-lg-4">
+                        <div class="card card-margin">
+                            {% with accepted_date=unacceptedrsvpevent.date|date:"Y-m-d" %}
+                                {% if accepted_date < current_date %}
+                                    <span style='color: red; font-weight: 900;text-align: right; position: absolute; right: 7px; top: 3px;'>Expired</span>
+                                {% endif %}
+                            {% endwith %}
+                            {% if unacceptedrsvpevent.isrsvp %}<span class='isrsvp'>RSVP</span>{% endif %}
+                            <div class="clearfix">
+                                <h4 style='color: blue;float:left;margin:0;padding:0;text-transform: uppercase;'>{{unacceptedrsvpevent.date}}</h4>
+                                <h4 style='color: blue;float:right;margin:0;padding:0;text-transform: uppercase;'>{{unacceptedrsvpevent.time}}</h4>
+                            </div>
+                            <h6 style='margin: 7px 0 0;'><span><span>Location</span> : </span>{{unacceptedrsvpevent.location}}</h6>
+                            <h6 style='margin: 7px 0 0;color: darkgoldenrod;'><span><span>Organizer Name</span> : </span>{{unacceptedrsvpevent.organizer.first_name}} {{unacceptedrsvpevent.organizer.last_name}}</h6>
+                            <h5 style='text-overflow: ellipsis; overflow: hidden; white-space: nowrap;'>{{unacceptedrsvpevent.title}}</h5>
+                            <p style='margin: 0; padding: 0; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical;'>{{unacceptedrsvpevent.description}}</p>
+                            <div class='clearfix' style='margin-top: 20px;'>
+                                <a href='{% url "rsvpeventconfirmation" unacceptedrsvpevent.id user.id %}' style='float:left;' class='rsvpconfirmation'>Give Confirmation</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style='height: 100px;width: 100%;position: relative;text-align:center;'><h3 style='position: relative; top: 50%; transform: translateY(-50%); margin: 0;'>No Event Yet</h3></div>
+            {% endif %}     
+        </div>
+    </div>
+    <div class="container">
+        <h1 style='text-align: left; color: #fff; background: #12432e; padding: 8px 22px; font-size: 15px; font-weight: 300;'>Confirmed RSVP<small style='font-size: 10px;'> (By You)</small></h1>
+        <div style='text-align: right;'>
+            <a id='viewcalender' href='{% url "viewrsvpeventcalendar" %}'>View Calendar</a>
+        </div>
+        <div class="row">
+            {% if acceptedrsvpevents|length > 0 %}
+                {% for acceptedrsvpevent in acceptedrsvpevents %}
+                    <div class="col-lg-4">
+                        <div class="card card-margin">
+                            {% with accepted_date=acceptedrsvpevent.date|date:"Y-m-d" %}
+                                {% if accepted_date < current_date %}
+                                    <span style='color: red; font-weight: 900;text-align: right; position: absolute; right: 7px; top: 3px;'>Expired</span>
+                                {% endif %}
+                            {% endwith %}
+                            {% if acceptedrsvpevent.isrsvp %}<span class='isrsvp'>RSVP</span>{% endif %}
+                            <div class="clearfix">
+                                <h4 style='color: blue;float:left;margin:0;padding:0;text-transform: uppercase;'>{{acceptedrsvpevent.date}}</h4>
+                                <h4 style='color: blue;float:right;margin:0;padding:0;text-transform: uppercase;'>{{acceptedrsvpevent.time}}</h4>
+                            </div>
+                            <h6 style='margin: 7px 0 0;'><span>Location : </span>{{acceptedrsvpevent.location}}</h6>
+                            <h6 style='margin: 7px 0 0;color: darkgoldenrod;'><span><span>Organizer Name</span> : </span>{{acceptedrsvpevent.organizer.first_name}} {{acceptedrsvpevent.organizer.last_name}}</h6>
+                            <h5 style='text-overflow: ellipsis; overflow: hidden; white-space: nowrap;'>{{acceptedrsvpevent.title}}</h5>
+                            <p style='margin: 0; padding: 0; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical;'>{{acceptedrsvpevent.description}}</p>
+                            <div class='clearfix' style='margin-top: 20px;'>
+                                <span style='float: left; font-weight: 900; color: green; font-size: 13px;'>&#10003; CONFIRMED</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <div style='height: 100px;width: 100%;position: relative;text-align:center;'><h3 style='position: relative; top: 50%; transform: translateY(-50%); margin: 0;'>No Event Yet</h3></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <h1 style='text-align: left; color: #fff; background: #221177; padding: 8px 22px; font-size: 15px; font-weight: 300;'>Invites For Event <small style='font-size: 10px;'> (Invitation For an Event(s))</small></h1>
+        <div class="row">
+            {% if casualeventinvitations|length > 0 %}
+                {% for casualeventinvitation in casualeventinvitations %}
+                    <div class="col-lg-4">
+                        <div class="card card-margin">
+                            {% with accepted_date=casualeventinvitation.date|date:"Y-m-d" %}
+                                {% if accepted_date < current_date %}
+                                    <span style='color: red; font-weight: 900;text-align: right; position: absolute; right: 7px; top: 3px;'>Expired</span>
+                                {% endif %}
+                            {% endwith %}
+                            <div class="clearfix">
+                                <h4 style='color: blue;float:left;margin:0;padding:0;text-transform: uppercase;'>{{casualeventinvitation.date}}</h4>
+                                <h4 style='color: blue;float:right;margin:0;padding:0;text-transform: uppercase;'>{{casualeventinvitation.time}}</h4>
+                            </div>
+                            <h6 style='margin: 7px 0 0;'><span>Location : </span>{{casualeventinvitation.location}}</h6>
+                            <h6 style='margin: 7px 0 0;color: darkgoldenrod;'><span><span>Organizer Name</span> : </span>{{casualeventinvitation.organizer.first_name}} {{casualeventinvitation.organizer.last_name}}</h6>
+                            <h5 style='text-overflow: ellipsis; overflow: hidden; white-space: nowrap;'>{{casualeventinvitation.title}}</h5>
+                            <p style='margin: 0; padding: 0; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical;'>{{casualeventinvitation.description}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style='height: 100px;width: 100%;position: relative;text-align:center;'><h3 style='position: relative; top: 50%; transform: translateY(-50%); margin: 0;'>No Event Yet</h3></div>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+{% endblock %}

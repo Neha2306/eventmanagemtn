@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% block pagetitle %}View {{event.title}}{% endblock %}
+{% block main-content %}
+    <div class="container">
+        <h1 style='text-align: center; font-size: 20px;'>{{event.title}}</h1>
+        <div class="row">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rsvpuser in event.rsvp_users.all %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{rsvpuser.first_name}} {{rsvpuser.last_name}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

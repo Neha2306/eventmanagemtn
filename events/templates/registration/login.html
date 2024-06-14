@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block pagetitle %}Login{% endblock %}
+
+{% block main-content %}
+    <div class='formclassdiv'>
+        <h1>Login</h1>
+        <form method='POST' class='formclass'>
+            {% csrf_token %}
+            {{form}}
+            <button type='submit'>Login</button>
+        </form>
+    </div>
+{% endblock %}

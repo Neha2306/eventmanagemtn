@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block pagetitle %}Registration{% endblock %}
+
+{% block main-content %}
+    <div class='formclassdiv'>
+        <h1>Registration</h1>
+        <form method='POST' class='formclass'>
+            {% csrf_token %}
+            {{form}}
+            <button type='submit'>Registration</button>
+        </form>
+    </div>
+{% endblock %}
