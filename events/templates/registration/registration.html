@@ -8,6 +8,7 @@
             {% csrf_token %}
             {{form}}
             <button type='submit'>Registration</button>
+            <p style='margin-bottom: 0;'>Already User? <a href='{% url "login" %}'>Login</a></p>
         </form>
     </div>
 {% endblock %}
