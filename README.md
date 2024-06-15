@@ -54,3 +54,28 @@
         </ul>
     </li>
 </ul>
+
+<hr>
+
+<h3>Installation</h3>
+<p>Follow these steps to set up and run the project locally:</p>
+<ul>
+  <li><b>Clone the repository:</b><br>
+    <pre>git clone GITURL<br>cd your-project</pre>
+  </li>
+  <li><b>Set up virtual environment (optional):</b><br>
+    <pre>python -m venv env<br># On Windows<br>env\Scripts\activate<br># On macOS/Linux<br>source env/bin/activate</pre>
+  </li>
+  <li><b>Install dependencies:</b><br>
+    <pre>pip install -r requirements.txt</pre>
+  </li>
+  <li><b>Apply migrations:</b><br>
+    <pre>python manage.py migrate</pre>
+  </li>
+  <li><b>Run the development server:</b><br>
+    <pre>python manage.py runserver</pre>
+  </li>
+  <li><b>Create a superuser (optional):</b><br>
+    <pre>python manage.py createsuperuser</pre>
+  </li>
+</ul>
