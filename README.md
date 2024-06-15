@@ -79,3 +79,23 @@
     <pre>python manage.py createsuperuser</pre>
   </li>
 </ul>
+
+<hr>
+
+<h3>How To Create Events</h3>
+<b>Event Details Setup : </b>
+<ul>
+    <li><b>Event Name:</b> Organizers must provide a unique name for the event.</li>
+    <li><b>Event Description:</b> A detailed description or summary of what the event entails.</li>
+    <li><b>Event Date:</b> The specific date on which the event will occur.</li>
+    <li><b>Event Time:</b> The start time of the event.</li>
+    <li><b>RSVP Requirement:</b> Organizers specify whether attendees need to RSVP (confirm their attendance) for the event.</li>
+    <li><b>Organizer Selection:</b> When creating the event, administrators select the organizer from a list, along with filling out the rest of the event details.</li>
+</ul>
+</br>
+<b>Event RSVP and Casual Invitation : </b>
+<ul>
+    <li><b>RSVP vs. Casual Event:</b> If the organizer does not mark the event as requiring RSVP, it is considered a casual event.</li>
+    <li><b>Casual Invitation:</b> For casual events, organizers can manually select which users to invite, will appear under the "Casual Invite Section" in the dashboard.</li>
+    <li><b>RSVP Confirmation:</b> For events marked as requiring RSVP, users must confirm their attendance, indicating whether they will attend or not.</li>
+</ul>
